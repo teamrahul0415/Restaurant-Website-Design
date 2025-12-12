@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KFC Restaurant - Login / Signup</title>
-  <link rel="stylesheet" href="style2.css"> <!-- use your theme CSS -->
+  <link rel="stylesheet" href="style2.css"> 
   <style>
-    /* small local tweaks so this page looks correct even if style.css differs */
+    
     .auth-wrap{max-width:420px;margin:26px auto;padding:18px;border-radius:8px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
     .auth-wrap h2{text-align:center;color:#d05a18;margin-bottom:8px}
     .form-row{margin:10px 0}
@@ -35,7 +35,7 @@
 
 <main class="container" style="padding-top:100px">
   <div class="auth-wrap" id="authWrap">
-    <!-- Signup form -->
+    
     <div id="signupBox" style="display:none">
       <h2>Create Account</h2>
       <div class="form-row">
@@ -57,7 +57,7 @@
       <div id="signupMsg" class="msg"></div>
     </div>
 
-    <!-- Login form -->
+    
     <div id="loginBox">
       <h2>Login</h2>
       <div class="form-row">
@@ -80,7 +80,7 @@
 <footer class="site-footer">© 2025 KFC Restaurant</footer>
 
 <script>
-  // Helper: show signup or login
+  
   function showSignup(){
     document.getElementById('signupBox').style.display = 'block';
     document.getElementById('loginBox').style.display = 'none';
@@ -97,7 +97,7 @@
     document.getElementById('loginMsg').textContent = '';
   }
 
-  // Signup: store email+password in localStorage (demo only)
+ 
   function doSignUp(){
     clearMessages();
     var email = document.getElementById('signupEmail').value.trim();
@@ -114,19 +114,19 @@
       showMsg('signupMsg','Passwords do not match','error'); return;
     }
 
-    // save (simple object) — key name chosen so it won't conflict
+    
     var user = { email: email, pass: p1 };
     try{
       localStorage.setItem('kfc_user', JSON.stringify(user));
       showMsg('signupMsg','Account created. You can now login.','success');
-      // switch to login after short delay
+      
       setTimeout(function(){ showLogin(); document.getElementById('loginEmail').value = email; }, 900);
     }catch(e){
       showMsg('signupMsg','Cannot save account (storage error)','error');
     }
   }
 
-  // Login: verify against localStorage
+  
   function doLogin(){
     clearMessages();
     var email = document.getElementById('loginEmail').value.trim();
@@ -149,7 +149,7 @@
 
     if(user.email === email && user.pass === pass){
       showMsg('loginMsg','Login successful! Redirecting...', 'success');
-      // redirect to home (use index2.html as in your project)
+      
       setTimeout(function(){ window.location.href = 'index2.html'; }, 900);
     } else {
       showMsg('loginMsg','Email or password incorrect','error');
@@ -162,7 +162,7 @@
     el.className = 'msg ' + (type === 'success' ? 'success' : 'error');
   }
 
-  // initialize: if no user, show signup to encourage creation, else show login
+ 
   (function init(){
     var has = localStorage.getItem('kfc_user');
     if(!has) showSignup(); else showLogin();

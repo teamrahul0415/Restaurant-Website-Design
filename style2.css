@@ -95,7 +95,7 @@ tbody td{
   text-align:left;
 }
 
-/* Centering price column if needed */
+
 table tbody td:last-child, table thead th:last-child {
   text-align:right;
 }
@@ -138,7 +138,7 @@ textarea{min-height:80px;resize:vertical}
 }
 .btn:hover, .reserve-btn:hover, button:hover{background:var(--accent-dark);transform:translateY(-1px)}
 
-/* Neutral button style (if you used whitesmoke earlier) */
+
 .btn-ghost{
   background:transparent;color:var(--accent);border:1px solid var(--border);
   width:auto;padding:8px 12px;border-radius:6px;
