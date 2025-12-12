@@ -1,0 +1,200 @@
+:root {
+  --accent: #ef7541;
+  --accent-dark: #d05a18;
+  --muted: #6b6b6b;
+  --bg: #fff;
+  --page: #f5f3f0;
+  --hero: #fff8e1;
+  --card: #ffffff;
+  --border: #e6e6e6;
+}
+
+/* Basic Reset */
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--page);
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Layout Container */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 14px;
+  width: calc(100% - 28px);
+}
+
+/* Header */
+.site-header, header {
+  background: var(--accent);
+  color: #fff;
+  border-bottom: 4px solid rgba(0,0,0,0.1);
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 6px;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.nav {
+  display: flex;
+  gap: 14px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.nav a:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-1px);
+}
+
+/* Active Link */
+.nav a.active {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Hero Section */
+.hero {
+  background: var(--hero);
+  padding: 22px;
+  text-align: center;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+}
+
+.hero h1,
+.hero h2 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.hero .sub {
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  margin-top: 10px;
+}
+
+thead th {
+  background: #fafafa;
+  padding: 12px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+tbody td {
+  padding: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Forms */
+form {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+/* Buttons */
+button,
+.btn,
+.reserve-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 14px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover,
+.reserve-btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+}
+
+/* Footer */
+.site-footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  margin-top: auto;
+}
+
+/* Responsive */
+@media (max-width: 760px) {
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  table thead {
+    display: none;
+  }
+
+  tbody td {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  tbody td::before {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    content: attr(data-label);
+    font-weight: bold;
+  }
+}

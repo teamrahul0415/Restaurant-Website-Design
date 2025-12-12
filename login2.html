@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KFC Restaurant — Login / Signup</title>
+  <link rel="stylesheet" href="style2.css">
+
+  <style>
+    .auth-wrap{
+      max-width:420px;margin:26px auto;padding:18px;
+      border-radius:8px;background:#fff;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06)
+    }
+    .auth-wrap h2{
+      text-align:center;color:#d05a18;margin-bottom:8px
+    }
+    .form-row{margin:10px 0}
+    input{
+      width:100%;padding:10px;border:1px solid #ddd;border-radius:6px
+    }
+    button{
+      width:100%;padding:12px;background:#ef7541;border:none;
+      color:#fff;font-weight:600;border-radius:8px;cursor:pointer
+    }
+    .hint{font-size:13px;text-align:center;margin-top:8px;color:#444}
+    .msg{text-align:center;font-size:14px;margin-top:8px}
+    .success{color:green}
+    .error{color:red}
+    .toggle-link{color:#d05a18;cursor:pointer;text-decoration:underline}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <div class="brand">KFC Restaurant</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About Us</a>
+      <a href="login2.html" class="active">Login</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:90px">
+
+  <div class="auth-wrap">
+
+    <!-- SIGNUP BOX -->
+    <div id="signupBox" style="display:none">
+      <h2>Create Account</h2>
+
+      <div class="form-row">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com">
+      </div>
+
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" id="signupPass" placeholder="Create password">
+      </div>
+
+      <div class="form-row">
+        <label>Confirm Password</label>
+        <input type="password" id="signupPass2" placeholder="Confirm password">
+      </div>
+
+      <button onclick="doSignUp()">Sign Up</button>
+      <div class="hint">Already have an account? 
+        <span class="toggle-link" onclick="showLogin()">Login here</span>
+      </div>
+
+      <div id="signupMsg" class="msg"></div>
+    </div>
+
+    <!-- LOGIN BOX -->
+    <div id="loginBox">
+      <h2>Login</h2>
+
+      <div class="form-row">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com">
+      </div>
+
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Password">
+      </div>
+
+      <button onclick="doLogin()">Login</button>
+      <div class="hint">New here? 
+        <span class="toggle-link" onclick="showSignup()">Create an account</span>
+      </div>
+
+      <div id="loginMsg" class="msg"></div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">© 2025 KFC Restaurant</footer>
+
+<script>
+  function showSignup() {
+    document.getElementById("signupBox").style.display = "block";
+    document.getElementById("loginBox").style.display = "none";
+  }
+
+  function showLogin() {
+    document.getElementById("signupBox").style.display = "none";
+    document.getElementById("loginBox").style.display = "block";
+  }
+
+  function doSignUp() {
+    let email = document.getElementById("signupEmail").value.trim();
+    let pass1 = document.getElementById("signupPass").value;
+    let pass2 = document.getElementById("signupPass2").value;
+
+    if (!email || !pass1 || !pass2) {
+      show("signupMsg", "Please fill all fields", "error");
+      return;
+    }
+    if (pass1.length < 4) {
+      show("signupMsg", "Password must be at least 4 characters", "error");
+      return;
+    }
+    if (pass1 !== pass2) {
+      show("signupMsg", "Passwords do not match", "error");
+      return;
+    }
+
+    let user = { email: email, pass: pass1 };
+    localStorage.setItem("kfc_user", JSON.stringify(user));
+
+    show("signupMsg", "Account created! You can now login.", "success");
+
+    setTimeout(() => {
+      showLogin();
+      document.getElementById("loginEmail").value = email;
+    }, 800);
+  }
+
+  function doLogin() {
+    let email = document.getElementById("loginEmail").value.trim();
+    let pass = document.getElementById("loginPass").value;
+
+    if (!email || !pass) {
+      show("loginMsg", "Enter email and password", "error");
+      return;
+    }
+
+    let stored = localStorage.getItem("kfc_user");
+    if (!stored) {
+      show("loginMsg", "No account found! Please sign up first.", "error");
+      return;
+    }
+
+    let user = JSON.parse(stored);
+
+    if (email === user.email && pass === user.pass) {
+      show("loginMsg", "Login successful! Redirecting...", "success");
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 800);
+    } else {
+      show("loginMsg", "Incorrect email or password", "error");
+    }
+  }
+
+  function show(id, message, type) {
+    const el = document.getElementById(id);
+    el.textContent = message;
+    el.className = "msg " + type;
+  }
+
+  // If account exists → show login, otherwise signup
+  (function () {
+    if (localStorage.getItem("kfc_user")) showLogin();
+    else showSignup();
+  })();
+</script>
+
+</body>
+</html>
