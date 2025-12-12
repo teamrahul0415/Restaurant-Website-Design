@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KFC Restaurant - Login / Signup</title>
+  <link rel="stylesheet" href="style2.css"> <!-- use your theme CSS -->
+  <style>
+    /* small local tweaks so this page looks correct even if style.css differs */
+    .auth-wrap{max-width:420px;margin:26px auto;padding:18px;border-radius:8px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .auth-wrap h2{text-align:center;color:#d05a18;margin-bottom:8px}
+    .form-row{margin:10px 0}
+    .hint{font-size:13px;color:#6b6b6b;margin-top:8px;text-align:center}
+    .msg{font-size:14px;margin-top:8px;text-align:center}
+    .msg.success{color:green}
+    .msg.error{color:#d04444}
+    .toggle-link{color:var(--accent);cursor:pointer;text-decoration:underline}
+    input{width:100%;padding:10px;border:1px solid #e6e6e6;border-radius:6px}
+    button{width:100%;padding:12px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <div class="brand">KFC Restaurant</div>
+    <nav class="nav">
+      <a href="index2.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About Us</a>
+      <a href="login2.html" class="active">Login</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:100px">
+  <div class="auth-wrap" id="authWrap">
+    <!-- Signup form -->
+    <div id="signupBox" style="display:none">
+      <h2>Create Account</h2>
+      <div class="form-row">
+        <label>Email</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" id="signupPass" placeholder="Create password" required>
+      </div>
+      <div class="form-row">
+        <label>Confirm Password</label>
+        <input type="password" id="signupPass2" placeholder="Confirm password" required>
+      </div>
+      <div class="form-row">
+        <button onclick="doSignUp()">Sign Up</button>
+      </div>
+      <div class="hint">Already have an account? <span class="toggle-link" onclick="showLogin()">Login here</span></div>
+      <div id="signupMsg" class="msg"></div>
+    </div>
+
+    <!-- Login form -->
+    <div id="loginBox">
+      <h2>Login</h2>
+      <div class="form-row">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Password" required>
+      </div>
+      <div class="form-row">
+        <button onclick="doLogin()">Login</button>
+      </div>
+      <div class="hint">New here? <span class="toggle-link" onclick="showSignup()">Create an account</span></div>
+      <div id="loginMsg" class="msg"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">© 2025 KFC Restaurant</footer>
+
+<script>
+  // Helper: show signup or login
+  function showSignup(){
+    document.getElementById('signupBox').style.display = 'block';
+    document.getElementById('loginBox').style.display = 'none';
+    clearMessages();
+  }
+  function showLogin(){
+    document.getElementById('signupBox').style.display = 'none';
+    document.getElementById('loginBox').style.display = 'block';
+    clearMessages();
+  }
+
+  function clearMessages(){
+    document.getElementById('signupMsg').textContent = '';
+    document.getElementById('loginMsg').textContent = '';
+  }
+
+  // Signup: store email+password in localStorage (demo only)
+  function doSignUp(){
+    clearMessages();
+    var email = document.getElementById('signupEmail').value.trim();
+    var p1 = document.getElementById('signupPass').value;
+    var p2 = document.getElementById('signupPass2').value;
+
+    if(!email || !p1 || !p2){
+      showMsg('signupMsg','Please fill all fields','error'); return;
+    }
+    if(p1.length < 4){
+      showMsg('signupMsg','Password too short (min 4 chars)','error'); return;
+    }
+    if(p1 !== p2){
+      showMsg('signupMsg','Passwords do not match','error'); return;
+    }
+
+    // save (simple object) — key name chosen so it won't conflict
+    var user = { email: email, pass: p1 };
+    try{
+      localStorage.setItem('kfc_user', JSON.stringify(user));
+      showMsg('signupMsg','Account created. You can now login.','success');
+      // switch to login after short delay
+      setTimeout(function(){ showLogin(); document.getElementById('loginEmail').value = email; }, 900);
+    }catch(e){
+      showMsg('signupMsg','Cannot save account (storage error)','error');
+    }
+  }
+
+  // Login: verify against localStorage
+  function doLogin(){
+    clearMessages();
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass = document.getElementById('loginPass').value;
+
+    if(!email || !pass){
+      showMsg('loginMsg','Please enter email and password','error'); return;
+    }
+
+    var raw = localStorage.getItem('kfc_user');
+    if(!raw){
+      showMsg('loginMsg','No account found. Please sign up first.','error'); return;
+    }
+
+    try{
+      var user = JSON.parse(raw);
+    }catch(e){
+      showMsg('loginMsg','Stored account corrupted. Please clear storage and sign up again.','error'); return;
+    }
+
+    if(user.email === email && user.pass === pass){
+      showMsg('loginMsg','Login successful! Redirecting...', 'success');
+      // redirect to home (use index2.html as in your project)
+      setTimeout(function(){ window.location.href = 'index2.html'; }, 900);
+    } else {
+      showMsg('loginMsg','Email or password incorrect','error');
+    }
+  }
+
+  function showMsg(elId, text, type){
+    var el = document.getElementById(elId);
+    el.textContent = text;
+    el.className = 'msg ' + (type === 'success' ? 'success' : 'error');
+  }
+
+  // initialize: if no user, show signup to encourage creation, else show login
+  (function init(){
+    var has = localStorage.getItem('kfc_user');
+    if(!has) showSignup(); else showLogin();
+  })();
+</script>
+
+</body>
+</html>
